@@ -5,7 +5,6 @@ export default function createHttpClient() {
   const Client = {};
   Client.request = async ({ method = "get", url, body: data, headers }) => {
     method = method.toLowerCase();
-    console.log("url--->", url, method);
     const res = await axios({ url, method, headers, data });
     if (res.status >= 400) {
       throw res.data;
