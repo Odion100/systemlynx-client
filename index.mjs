@@ -1,13 +1,16 @@
 // These are all the abstractions that make up SystemLynx
-import createClient from "./systemlynx/Client/Client.mjs";
-import createHttpClient from "./systemlynx/HttpClient/HttpClient.mjs";
-import createDispatcher from "./systemlynx/Dispatcher/Dispatcher.mjs";
+import _createClient from "./systemlynx/Client/Client.mjs";
+import _createHttpClient from "./systemlynx/HttpClient/HttpClient.mjs";
+import _createDispatcher from "./systemlynx/Dispatcher/Dispatcher.mjs";
 
-export const HttpClient = createHttpClient();
-export const Client = createClient();
-export const Dispatcher = new createDispatcher();
+export const HttpClient = _createHttpClient();
+export const Client = _createClient();
+export const Dispatcher = new _createDispatcher();
+export const createClient = _createClient;
+export const createHttpClient = _createHttpClient;
+export const createDispatcher = _createDispatcher;
 
-const systemlynx = {
+export default systemlynx = {
   // Export these pre-created objects for convenient object destructuring
   // These are the main utilities for app development
   HttpClient,
@@ -19,4 +22,3 @@ const systemlynx = {
   createHttpClient,
   createDispatcher,
 };
-export default systemlynx;
