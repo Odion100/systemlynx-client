@@ -61,12 +61,8 @@ export default function ServiceRequestHandler(
     };
 
     const ErrorHandler = (err, errCount, cb) => {
-      if (!err.isAxiosError) throw err;
-      if (!err.response) throw err;
-      if (!err.response.data) throw err;
-
-      if (err.response.data.SystemLynxService) {
-        cb(err.response.data);
+      if (err.SystemLynxService) {
+        cb(err);
       } else if (errCount <= 3) {
         errCount++;
         if (reconnectModule) reconnectModule(() => tryRequest(cb, errCount));
