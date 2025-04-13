@@ -18,7 +18,7 @@ export default function createClient(httpClient = HttpClient(), systemContext) {
     const Service = Client.createService(connData);
 
     Client.cachedServices[url] = Service;
-    //await new Promise((resolve) => Service.on("connect", resolve));
+    await new Promise((resolve) => Service.on("connect", resolve));
 
     return Service;
   };
@@ -30,21 +30,24 @@ export default function createClient(httpClient = HttpClient(), systemContext) {
       return Client.cachedServices[connData.serviceUrl];
 
     const Service = {};
-    SocketDispatcher.apply(Service, [connData.namespace, events, systemContext]);
+    SocketDispatcher.apply(Service, [connData, events, systemContext]);
     HeaderSetter.apply(Service);
     Client.cachedServices[connData.serviceUrl] = Service;
 
     Service.resetConnection = async (cb) => {
       try {
-        const { modules, host, port, namespace } = await loadConnectionData(
-          httpClient,
-          connData.serviceUrl
-        );
-        SocketDispatcher.apply(Service, [namespace, events, systemContext]);
+        const { modules, host, port, route, namespace, socketPath } =
+          await loadConnectionData(httpClient, connData.serviceUrl);
+
+        SocketDispatcher.apply(Service, [
+          { socketPath, namespace },
+          events,
+          systemContext,
+        ]);
 
         modules.forEach(({ namespace, route, name }) => {
           if (Service[name]) {
-            Service[name].__setConnection(host, port, route, namespace);
+            Service[name].__setConnection({ host, port, route, namespace, socketPath });
             Service[name].emit("reconnect");
           }
         });

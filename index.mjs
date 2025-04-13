@@ -10,7 +10,7 @@ export const createClient = _createClient;
 export const createHttpClient = _createHttpClient;
 export const createDispatcher = _createDispatcher;
 
-export default systemlynx = {
+export default {
   // Export these pre-created objects for convenient object destructuring
   // These are the main utilities for app development
   HttpClient,
