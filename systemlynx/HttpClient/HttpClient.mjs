@@ -1,5 +1,6 @@
 import axios from "axios";
 import FormData from "form-data";
+import { isNode } from "../../utils/ProcessChecker.mjs";
 
 export default function createHttpClient() {
   const Client = {};
