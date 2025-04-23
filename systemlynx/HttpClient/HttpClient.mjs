@@ -1,6 +1,5 @@
 import axios from "axios";
 import FormData from "form-data";
-import { isNode } from "../../utils/ProcessChecker.mjs";
 
 export default function createHttpClient() {
   const Client = {};
@@ -22,10 +21,10 @@ export default function createHttpClient() {
   Client.upload = async ({ url, formData, headers }) => {
     const { file, files, __arguments } = formData;
     const form = new FormData();
-    if (file) form.append("file", file, isNode ? path.basename(file.path) : file.name);
+    if (file) form.append("file", file, file.name);
     if (files) {
       files.forEach((file) => {
-        form.append("files", file, isNode ? path.basename(file.path) : file.name);
+        form.append("files", file, file.name);
       });
     }
     if (__arguments) form.append("__arguments", JSON.stringify(__arguments));
